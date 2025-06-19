@@ -1,0 +1,50 @@
+# -------------------------
+# Node.js and React Project
+# -------------------------
+
+# Dependency folders
+**/node_modules/
+
+# Build output folders
+**/build/
+**/dist/
+
+# Environment variable files
+**/.env
+**/.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.swp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+jest-cache/
+jest-test-results.json
+
+# Cache and temp
+**/.next/
+**/.turbo/
+**/.cache/
+tmp/
+temp/
+
+# Misc
+*.local
+*.lock-wscript
+
+# Optional: ignore uploads/media folders if needed
+# /back-end/uploads/
