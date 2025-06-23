@@ -2,11 +2,51 @@ import React from 'react';
 import Typography  from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import { SocialIcon } from 'react-social-icons';
 import { FcGoogle } from 'react-icons/fc';
 import { FaFacebook, FaGithub } from 'react-icons/fa';
+import { useState } from 'react';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+
+    const [isVisible, setVisible] = useState(false);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const navigate = useNavigate();
+    
+    const passVisibility = () => {
+        setVisible(!isVisible);
+    }
+
+    const handleLogin =  async (e) => {
+        e.preventDefault();
+        console.log("Login button clicked");
+        try{
+            const res = await fetch('http://localhost:3000/api/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email: email, password: password})
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert("Login successful: " + data.message);
+                console.log("User data:", data.user);
+            }else{
+                alert("login unsuccessful");
+            }
+        }catch(err){
+            alert("Error during login: " + err.message);
+        }
+    }
 
     return (
         <>
@@ -15,12 +55,24 @@ export default function Login() {
                     <div style={{display: 'flex', flexDirection: 'column', width: '60%', gap: '20px', justifyContent: 'center', alignItems: 'center'}}>
                         <Typography variant="h4" sx={{fontWeight: 750 ,mb: 4, mt: 4}}>
                             SIGN IN
-                        </Typography>
+                        </Typography>   
                         <div style={{display: 'flex', flexDirection: 'column', width: '100%', gap: '40px', marginBottom: 6}}> 
-                            <TextField id='filled-basic' variant='filled' label='Username or email'></TextField>
-                            <TextField id='filled-basic' variant='filled' type='password' label='Password'></TextField>
+                            <TextField id='filled-basic' variant='filled' label='Username or email' onChange={e => setEmail(e.target.value)}></TextField>
+                            <TextField
+                             id='filled-basic' variant='filled' 
+                             type={isVisible ? 'text' : 'password'} 
+                             label='Password'
+                             InputProps={{
+                                endAdornment : (<InputAdornment position='end'>
+                                    <IconButton onClick={passVisibility} sx={{'&:focus':{outline: 'none', border: 'none'}}}>
+                                        {isVisible ? <VisibilityOff/>:<Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>),
+                             }}
+                             onChange={e => setPassword(e.target.value)}
+                             />
                         </div>
-                        <Button variant="contained" size="large" sx={{borderRadius: '30px', minWidth: '200px', minHeight: '45px', mb: 4, backgroundColor: '#000000', '&:hover' :{backgroundColor: '#A3A3A3', color: 'black'}}}>
+                        <Button onClick={handleLogin} variant="contained" size="large" sx={{borderRadius: '30px', minWidth: '200px', minHeight: '45px', mb: 4, backgroundColor: '#000000', '&:hover' :{backgroundColor: '#A3A3A3', color: 'black', outline: 'none'}}}>
                             LOG IN
                         </Button>
                         <Typography variant="h10">
@@ -40,10 +92,12 @@ export default function Login() {
                                                 GREAT AMOUNT OF NEW 
                                                 OPPORTUNITIES
                         </Typography>
-                        <Button variant="contained" size="large" sx={{borderRadius: '30px', minWidth: '240px', backgroundColor: '#D9D9D9', color: 'black', fontWeight: 'bold', '&:hover' :{backgroundColor: '#A29E9E', color: 'white'}}}>SIGN UP</Button>
+                        <Button onClick={() => navigate('/register')} variant="contained" size="large" sx={{borderRadius: '30px', minWidth: '240px', backgroundColor: '#D9D9D9', color: 'black', fontWeight: 'bold', '&:hover' :{backgroundColor: '#A29E9E', color: 'white', outline: 'none'}}}>SIGN UP</Button>
                     </div>
                 </div>
             </div>
         </>
     );
+
+
 }

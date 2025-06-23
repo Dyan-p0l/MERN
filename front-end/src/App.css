@@ -5,16 +5,28 @@
   text-align: center;
 }
 
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
 body{
   background-color: #E7E5E5;
   position: relative;
 
 }
 
+button:focus {
+  outline: none;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  outline: none;
 }
 
 .loginWrapper{
@@ -27,4 +39,13 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.registrationwrapper {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
 }
